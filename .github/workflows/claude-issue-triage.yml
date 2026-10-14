@@ -45,5 +45,10 @@ jobs:
                  leyendo el repositorio).
                - Propuesta breve de enfoque para abordarlo.
 
+               El comentario debe estar escrito en formato Markdown válido que GitHub
+               pueda renderizar correctamente (encabezados con `#`, listas con `-`,
+               bloques de código con comillas invertidas triples, texto en negrita con
+               `**...**`, etc.).
+
           claude_args: |
             --allowedTools "Bash(gh issue view:*),Bash(gh issue edit:*),Bash(gh issue comment:*),Bash(gh label list:*)"
