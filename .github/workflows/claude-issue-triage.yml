@@ -1,0 +1,49 @@
+name: Claude Issue Triage
+
+# Analiza automáticamente cada issue creado/editado/reabierto: asigna las labels
+# existentes del repo que correspondan y publica un diagnóstico general del problema
+# como insumo para implementar la solución más adelante.
+on:
+  issues:
+    types: [opened, edited, reopened]
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: read
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Run Claude Issue Triage
+        id: claude-triage
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          prompt: |
+            Analiza el issue #${{ github.event.issue.number }} de este repositorio
+            (título y descripción) y haz lo siguiente:
+
+            1. Lista las labels que ya existen en el repo con `gh label list` y elige
+               únicamente entre esas las que correspondan al issue. No crees labels
+               nuevas bajo ningún motivo.
+            2. Aplica las labels elegidas al issue con
+               `gh issue edit ${{ github.event.issue.number }} --add-label "<label>"`.
+            3. Publica un comentario en el issue (`gh issue comment ${{ github.event.issue.number }} --body "..."`)
+               con un diagnóstico general y breve que sirva como punto de partida para
+               implementar la solución, incluyendo:
+               - Resumen del problema.
+               - Causa probable y/o área del código afectada (si se puede inferir
+                 leyendo el repositorio).
+               - Propuesta breve de enfoque para abordarlo.
+
+          claude_args: |
+            --allowedTools "Bash(gh issue view:*),Bash(gh issue edit:*),Bash(gh issue comment:*),Bash(gh label list:*)"
