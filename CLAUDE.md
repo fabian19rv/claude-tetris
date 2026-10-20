@@ -22,8 +22,9 @@ Then open `http://localhost:8000`. Opening `index.html` directly in a browser al
 
 Everything (state, update loop, rendering, input) lives in `game.js` as module-level globals and functions — there is no component/class structure.
 
-- **Board model**: `board` is a `ROWS × COLS` matrix (10×20); each cell is `0` (empty) or a color index 1–7 identifying which piece locked there.
-- **Pieces**: `PIECES` defines the 7 tetrominoes as square matrices. Rotation is done via `rotateCW` (transpose + reverse rows), not precomputed rotation states.
+- **Board model**: `board` is a `ROWS × COLS` matrix (10×20); each cell is `0` (empty) or a color index 1–12 identifying which piece locked there.
+- **Pieces**: `PIECES` defines the 7 classic tetrominoes (types 1–7) plus 5 special pieces (types 8–12): pentominoes `+`, `U`, `Y`, a 1×1 single, and a hollow 3×3. Rotation is done via `rotateCW` (transpose + reverse rows), not precomputed rotation states — this is generic over any rectangular shape, so the non-square special pieces need no special-casing.
+- **Special piece spawning**: `randomPiece()` picks a special type (`SPECIAL_TYPES = [8,9,10,12]`) with probability `SPECIAL_CHANCE` (0.15), otherwise a classic type 1–7. The single (type 11, `REWARD_TYPE`) is never drawn randomly — `clearLines()` sets `pendingReward` on a 4-line clear (Tetris), and `spawn()` forces `next` to the single the following spawn, so it appears immediately in the NEXT preview as a reward.
 - **Collision**: `collide(shape, ox, oy)` checks board bounds and overlap against the current `board` — called before every move/rotate/drop.
 - **Wall kicks**: `tryRotate()` rotates then tries offsets `[0, -1, 1, -2, 2]` columns until one doesn't collide, else the rotation is discarded.
 - **Game loop**: `loop(ts)` runs on `requestAnimationFrame`, accumulates `dt` into `dropAccum`, and advances the piece down once `dropAccum >= dropInterval`; otherwise calls `lockPiece()`.

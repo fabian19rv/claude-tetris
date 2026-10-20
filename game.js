@@ -13,6 +13,11 @@ const COLORS = [
   '#e57373', // Z - red
   '#9fa8da', // J - pale indigo
   '#ffb74d', // L - orange
+  '#f06292', // Plus (+) - pink
+  '#4db6ac', // U - teal
+  '#7986cb', // Y - indigo
+  '#fff59d', // Single (recompensa) - dorado pálido
+  '#78909c', // 3x3 hueca (reto) - gris azulado
 ];
 
 const PIECES = [
@@ -24,7 +29,16 @@ const PIECES = [
   [[5,5,0],[0,5,5],[0,0,0]],                  // Z
   [[6,0,0],[6,6,6],[0,0,0]],                  // J
   [[0,0,7],[7,7,7],[0,0,0]],                  // L
+  [[0,8,0],[8,8,8],[0,8,0]],                  // Plus (+)
+  [[9,0,9],[9,9,9]],                          // U
+  [[0,10,0,0],[10,10,10,10]],                 // Y
+  [[11]],                                     // Single (1x1, recompensa tras Tetris)
+  [[12,12,12],[12,0,12],[12,12,12]],          // 3x3 hueca (reto)
 ];
+
+const SPECIAL_TYPES = [8, 9, 10, 12]; // pentominós + reto; el single (11) solo sale como recompensa
+const SPECIAL_CHANCE = 0.15;
+const REWARD_TYPE = 11;
 
 const LINE_SCORES = [0, 100, 300, 500, 800];
 
@@ -41,16 +55,22 @@ const overlayScore = document.getElementById('overlay-score');
 const restartBtn = document.getElementById('restart-btn');
 const themeBtn = document.getElementById('theme-toggle');
 
-let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId;
+let board, current, next, score, lines, level, paused, gameOver, lastTime, dropAccum, dropInterval, animId, pendingReward;
 
 function createBoard() {
   return Array.from({ length: ROWS }, () => new Array(COLS).fill(0));
 }
 
-function randomPiece() {
-  const type = Math.floor(Math.random() * 7) + 1;
+function buildPiece(type) {
   const shape = PIECES[type].map(row => [...row]);
   return { type, shape, x: Math.floor(COLS / 2) - Math.floor(shape[0].length / 2), y: 0 };
+}
+
+function randomPiece() {
+  const type = Math.random() < SPECIAL_CHANCE
+    ? SPECIAL_TYPES[Math.floor(Math.random() * SPECIAL_TYPES.length)]
+    : Math.floor(Math.random() * 7) + 1;
+  return buildPiece(type);
 }
 
 function collide(shape, ox, oy) {
@@ -109,6 +129,7 @@ function clearLines() {
     score += (LINE_SCORES[cleared] || 0) * level;
     level = Math.floor(lines / 10) + 1;
     dropInterval = Math.max(100, 1000 - (level - 1) * 90);
+    if (cleared === 4) pendingReward = true;
     updateHUD();
   }
 }
@@ -144,7 +165,8 @@ function lockPiece() {
 
 function spawn() {
   current = next;
-  next = randomPiece();
+  next = pendingReward ? buildPiece(REWARD_TYPE) : randomPiece();
+  pendingReward = false;
   if (collide(current.shape, current.x, current.y)) {
     endGame();
   }
@@ -268,6 +290,7 @@ function init() {
   level = 1;
   paused = false;
   gameOver = false;
+  pendingReward = false;
   dropInterval = 1000;
   dropAccum = 0;
   lastTime = performance.now();
