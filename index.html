@@ -51,8 +51,53 @@
       <div class="overlay-box">
         <p id="overlay-title">GAME OVER</p>
         <p id="overlay-score"></p>
+
+        <div class="hs-section">
+          <span class="label">TOP 5 RÉCORDS</span>
+          <ol id="gameover-highscore-list" class="hs-list"></ol>
+        </div>
+        <div class="hs-stats">
+          <div class="hs-stat">
+            <span class="label">MEJOR COMBO</span>
+            <span class="value" id="gameover-best-combo">0</span>
+          </div>
+          <div class="hs-stat">
+            <span class="label">MÁS LÍNEAS</span>
+            <span class="value" id="gameover-best-lines">0</span>
+          </div>
+        </div>
+
+        <div id="save-score-form" class="save-score-form hidden">
+          <input type="text" id="player-name-input" maxlength="12" placeholder="Tu nombre" />
+          <button id="save-score-btn" type="button">Guardar</button>
+        </div>
+
         <button id="restart-btn">Reiniciar</button>
       </div>
+    </div>
+  </div>
+
+  <div id="start-overlay" class="overlay start-overlay">
+    <div class="overlay-box">
+      <h2 class="start-title">TETRIS</h2>
+
+      <div class="hs-section">
+        <span class="label">TOP 5 RÉCORDS</span>
+        <ol id="start-highscore-list" class="hs-list"></ol>
+      </div>
+      <div class="hs-stats">
+        <div class="hs-stat">
+          <span class="label">MEJOR COMBO</span>
+          <span class="value" id="start-best-combo">0</span>
+        </div>
+        <div class="hs-stat">
+          <span class="label">MÁS LÍNEAS</span>
+          <span class="value" id="start-best-lines">0</span>
+        </div>
+      </div>
+
+      <button id="start-play-btn" type="button">Jugar</button>
+      <button id="reset-scores-btn" type="button" class="secondary-btn">Resetear récords</button>
     </div>
   </div>
 
