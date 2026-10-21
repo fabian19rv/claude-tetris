@@ -479,3 +479,21 @@ kbd {
 .theme-toggle:hover {
   border-color: var(--accent);
 }
+
+/* ---- Selector de skin ---- */
+.skin-selector {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  background: var(--board-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.skin-selector:hover {
+  border-color: var(--accent);
+}
