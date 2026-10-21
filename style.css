@@ -227,6 +227,151 @@ kbd {
   opacity: 0;
 }
 
+/* ---- Récords / tabla de puntuaciones ---- */
+.start-overlay {
+  position: fixed;
+  z-index: 10;
+  border-radius: 0;
+}
+
+.start-title {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 8px;
+  color: var(--accent);
+  text-shadow: 0 0 16px var(--accent-glow);
+}
+
+.hs-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 220px;
+}
+
+.hs-list {
+  list-style: none;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hs-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  color: var(--text);
+  background: var(--board-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+}
+
+.hs-entry .hs-rank {
+  color: var(--label);
+  min-width: 18px;
+}
+
+.hs-entry .hs-name {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hs-entry .hs-score {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.hs-entry.hs-highlight {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+  background: var(--accent-glow);
+}
+
+.hs-empty {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 6px 0;
+}
+
+.hs-stats {
+  display: flex;
+  gap: 24px;
+}
+
+.hs-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.save-score-form {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.save-score-form.hidden {
+  display: none;
+}
+
+#player-name-input {
+  background: var(--board-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 140px;
+}
+
+#player-name-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+#save-score-btn {
+  background: var(--accent);
+  color: var(--btn-text);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.15s;
+}
+
+#save-score-btn:hover {
+  background: var(--accent-hover);
+}
+
+.secondary-btn {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 18px;
+  font-size: 12px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.secondary-btn:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
 /* ---- Toggle de tema ---- */
 .theme-toggle {
   position: fixed;
